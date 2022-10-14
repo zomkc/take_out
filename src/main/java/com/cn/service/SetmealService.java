@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.cn.dto.SetmealDto;
 import com.cn.entity.Setmeal;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -18,4 +19,7 @@ public interface SetmealService extends IService<Setmeal> {
 
     //停售
     public void stopById(@PathVariable int status, @RequestParam Long id);
+
+    //更新套餐
+    void put(@RequestBody SetmealDto setmealDto);
 }

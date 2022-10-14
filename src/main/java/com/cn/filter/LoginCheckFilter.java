@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.cn.common.BaseContext;
 import com.cn.common.R;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.util.AntPathMatcher;
 
 import javax.servlet.*;

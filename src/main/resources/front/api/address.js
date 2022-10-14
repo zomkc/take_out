@@ -52,7 +52,7 @@ function addressFindOneApi(id) {
 //设置默认地址
 function setDefaultAddressApi(data) {
     return $axios({
-        'url': '/addressBook/default',
+        'url': '/addressBook/',
         'method': 'put',
         data
     })

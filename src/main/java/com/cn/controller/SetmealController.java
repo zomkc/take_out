@@ -12,7 +12,10 @@ import com.cn.service.CategoryService;
 import com.cn.service.DishService;
 import com.cn.service.SetmealDishService;
 import com.cn.service.SetmealService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -32,6 +35,7 @@ public class SetmealController {
 
     //新增套餐
     @PostMapping
+    @CacheEvict(value = "setmealCache",allEntries = true)
     public R<String> save(@RequestBody SetmealDto setmealDto){
         setmealService.saveWithDish(setmealDto);
 
@@ -79,6 +83,7 @@ public class SetmealController {
     }
 
     @DeleteMapping
+    @CacheEvict(value = "setmealCache",allEntries = true)//删除套餐,删除当前属性下的所有数据
     public R<String> delete(@RequestParam List<Long> ids){
         setmealService.removeWithDish(ids);
         return R.success("删除成功");
@@ -86,6 +91,7 @@ public class SetmealController {
 
     //停售套餐
     @PostMapping("status/{status}")
+    @CacheEvict(value = "setmealCache",allEntries = true)
     public R<String> Stop(@PathVariable int status,@RequestParam List<Long> ids){
 
         ids.forEach((id) -> {
@@ -98,6 +104,7 @@ public class SetmealController {
 
     //根据条件查询菜品数据,查询套餐里的菜品
     @GetMapping("/list")
+    @Cacheable({"setmealCache"})
     public R<List<Setmeal>> list(Setmeal dish) {
         LambdaQueryWrapper<Setmeal> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(dish.getCategoryId() != null, Setmeal::getCategoryId, dish.getCategoryId())
@@ -108,8 +115,35 @@ public class SetmealController {
         return R.success(list);
     }
 
+    //修改套餐信息
+    @PutMapping
+    @CacheEvict(value = "setmealCache",allEntries = true)
+    public R<String> put(@RequestBody SetmealDto setmealDto){
+        setmealService.put(setmealDto);
 
-    //套餐详情
+        return R.success("修改套餐成功");
+    }
+
+
+    //管理端套餐详情
+    @GetMapping("/{id}")
+    public R<SetmealDto> rundish(@PathVariable Long id){
+        SetmealDto dto = new SetmealDto();
+
+        LambdaQueryWrapper<SetmealDish> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(SetmealDish::getSetmealId,id);
+        List<SetmealDish> list = setmealDishService.list(queryWrapper);
+        //将套餐菜品信息赋值给dto
+        dto.setSetmealDishes(list);
+
+        Setmeal setmeal = setmealService.getById(id);
+        //将套餐信息赋值给dot
+        BeanUtils.copyProperties(setmeal,dto);
+
+        return R.success(dto);
+    }
+
+    //客户端套餐详情
     @Autowired
     private DishService dishService;
     @GetMapping("/dish/{id}")

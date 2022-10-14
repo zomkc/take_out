@@ -67,4 +67,28 @@ public class SetmealImpl extends ServiceImpl<SetmealMapper, Setmeal> implements 
     public void stopById(int status, Long id) {
         setmealMapper.stopById(status,id);
     }
+
+
+
+    @Override
+    public void put(SetmealDto setmealDto) {
+        LambdaQueryWrapper<Setmeal> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Setmeal::getId,setmealDto.getId());
+        //更新套餐表数据
+        this.update(setmealDto,wrapper);
+
+        LambdaQueryWrapper<SetmealDish> wrapper1 = new LambdaQueryWrapper<>();
+        wrapper1.eq(SetmealDish::getSetmealId,setmealDto.getId());
+        //根据套餐id删除套餐关联菜品
+        setmealDishService.remove(wrapper1);
+        //保存套餐和菜品的关联信息,操作setmeal_dish
+        List<SetmealDish> setmealDishes = setmealDto.getSetmealDishes();
+        //遍历setmeal_dish,给每一个id赋值setmeal的id
+        setmealDishes.stream().map((item) -> {
+            item.setSetmealId(setmealDto.getId());
+            return item;
+        }).collect(Collectors.toList());
+
+        setmealDishService.saveBatch(setmealDishes);
+    }
 }
