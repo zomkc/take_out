@@ -35,7 +35,7 @@ public class AddressBookController {
      * 设置默认地址
      */
 //    @PutMapping("default")
-    @PutMapping()
+    @PutMapping
     public R<AddressBook> setDefault(@RequestBody AddressBook addressBook) {
         LambdaUpdateWrapper<AddressBook> wrapper = new LambdaUpdateWrapper<>();
         wrapper.eq(AddressBook::getUserId, BaseContext.getCurrentId());

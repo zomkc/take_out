@@ -12,6 +12,19 @@
     <artifactId>take_out</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <properties>
+<!-- 部署环境
+    服务器A:
+        nginx:部署前端项目,配置反向代理
+        mysql:主从复制中的主库
+     服务器B:
+        jdk:运行java项目
+        git:版本控制,脚本获取主分支最新版本,并部署
+        maven:项目构建工具
+        jar:spring boot项目打包成jar包,基于内置tomcat运行
+        mysql:主从复制中的从库
+     服务器C:
+        Redis:缓存中间件
+-->
         <java.version>1.8</java.version>
     </properties>
     <dependencies>
@@ -99,6 +112,12 @@
             <groupId>org.apache.shardingsphere</groupId>
             <artifactId>sharding-jdbc-spring-namespace</artifactId>
             <version>4.0.0-RC1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-spring-boot-starter</artifactId>
+            <version>3.0.2</version>
         </dependency>
     </dependencies>
 

@@ -11,6 +11,10 @@ import com.cn.entity.DishFlavor;
 import com.cn.service.CategoryService;
 import com.cn.service.DishFlavorService;
 import com.cn.service.DishService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -25,6 +29,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/dish")
+@Api(tags = "菜品相关接口")
 public class DishController {
 
     @Autowired
@@ -37,6 +42,7 @@ public class DishController {
 
     //新增菜品
     @PostMapping
+    @ApiOperation(value = "新增菜品接口")
     public R<String> save(@RequestBody DishDto dishDto) {
         dishService.saveWithFlavor(dishDto);
 
@@ -49,6 +55,12 @@ public class DishController {
 
     //分页
     @GetMapping("/page")
+    @ApiOperation(value = "菜品分页接口")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page",value = "页码",required = true),
+            @ApiImplicitParam(name = "pageSize",value = "每页的页数",required = true),
+            @ApiImplicitParam(name = "name",value = "菜品名称(模糊查询)",required = false)
+    })
     public R<Page> page(int page, int pageSize, String name) {
         Page<Dish> pageInfo = new Page<>(page, pageSize);
         Page<DishDto> dishDtoPage = new Page<>();
