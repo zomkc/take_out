@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cn.common.R;
 import com.cn.entity.Employee;
 import com.cn.service.EmployeeService;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
 
-@Slf4j
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController {
@@ -129,7 +126,6 @@ public class EmployeeController {
     //根据id查询员工信息
     @GetMapping("/{id}")
     public R<Employee> getById(@PathVariable Long id){
-        log.info("根据id查询员工信息...");
         Employee employee = employeeService.getById(id);
         if(employee != null){
             return R.success(employee);
