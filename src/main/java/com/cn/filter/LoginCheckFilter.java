@@ -4,8 +4,6 @@ package com.cn.filter;
 import com.alibaba.fastjson.JSON;
 import com.cn.common.BaseContext;
 import com.cn.common.R;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.util.AntPathMatcher;
 
 import javax.servlet.*;
@@ -16,7 +14,6 @@ import java.io.IOException;
 
 //匹配器,  检测用户是否登录
 @WebFilter(urlPatterns = "/*")
-@Slf4j
 public class LoginCheckFilter implements Filter {
     public static final AntPathMatcher PATH_MATCHER = new AntPathMatcher();
 

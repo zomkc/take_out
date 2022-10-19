@@ -40,8 +40,8 @@
                 </div>
                 <div class="dishList">
                     <div v-for="(item,index) in order.orderDetails" :key="index" class="item">
-                        <span>{{item.name}}</span>
-                        <span>x{{item.number}}</span>
+                        <span>{{item.name}}×{{item.number}}份</span>
+                        <span>{{item.amount}}</span>
                     </div>
                 </div>
                 <div class="result">
