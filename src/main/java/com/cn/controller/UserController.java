@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.cn.common.R;
 import com.cn.entity.User;
 import com.cn.service.UserService;
+import com.cn.utils.SMSUtils;
 import com.cn.utils.ValidateCodeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -39,9 +40,6 @@ public class UserController {
             //调用阿里短信服务
             //SMSUtils.sendMessage("阿里云短信测试","SMS_154950909",phone,code);
             log.info(code);
-            //存入session
-//            session.setAttribute(phone,code);
-
             //将验证码缓存到redis中,设置有效期为五分钟
             redisTemplate.opsForValue().set(phone,code,5, TimeUnit.MINUTES);
 
@@ -90,6 +88,41 @@ public class UserController {
 
 
         return R.error("登录失败");
+    }
+
+    //账号密码登录
+    @PostMapping("/password")
+    public R<User> password(@RequestBody Map map,HttpSession session) {
+        //获取手机号
+        String phone = map.get("phone").toString();
+        //获取密码
+        String password =  map.get("password").toString();
+
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(User::getPhone,phone)
+                .eq(User::getPassword,password);
+
+        User user = userService.getOne(wrapper);
+        if (user == null){
+            //判断用户是否存在,如果存在则提示密码错误
+            LambdaQueryWrapper<User> wrapper2 = new LambdaQueryWrapper<>();
+            wrapper2.eq(User::getPhone,phone);
+            User user2 = userService.getOne(wrapper2);
+            if (user2 != null){
+                return R.error("密码错误");
+            }
+            //当前用户是新用户,自动注册账号
+            user = new User();
+            user.setName(phone);
+            user.setPhone(phone);
+            user.setStatus(1);
+            user.setPassword(password);
+            userService.save(user);
+        }
+        user = userService.getOne(wrapper);
+        session.setAttribute("user",user.getId());
+
+        return R.success(user);
     }
 
     //用户退出

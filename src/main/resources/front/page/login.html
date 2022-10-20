@@ -22,20 +22,54 @@
 <body>
 <div id="login" v-loading="loading">
     <div class="divHead">登录</div>
-    <div class="divContainer">
-        <el-input placeholder=" 请输入手机号码" v-model="form.phone" maxlength='20'/>
+    <div class="divContainer" v-if="loginWay">
+        <el-input placeholder="  请输入手机号码"  v-model="form.phone" maxlength='20'/>
         </el-input>
-        <div class="divSplit"></div>
-        <el-input placeholder=" 请输入验证码" v-model="form.code" maxlength='20'/>
+<!--        <div class="divSplit"></div>-->
+        <el-input placeholder=" 请输入验证码"  v-model="form.code" maxlength='20'/>
         </el-input>
-        <span v-if="codeShow" style="color:#ff0000;" @click='getCode'>获取验证码</span>
+        <span v-if="codeShow" style="color:#ff0000;"  @click='getCode'>获取验证码</span>
         <!--倒计时-->
         <span v-if="!codeShow" style="color:#bbbbbb;" class="count">{{count}}秒后重试</span>
     </div>
+    <div class="divContainer" v-if="!loginWay">
+        <el-input placeholder="  请输入手机号码"  v-model="form.phone" maxlength='20'/>
+        </el-input>
+        <!--        <div class="divSplit"></div>-->
+        <el-input placeholder=" 请输入密码" v-if="!loginWay" v-model="form.password" maxlength='20'/>
+        </el-input>
+    </div>
+
     <div class="divMsg" v-if="msgFlag">手机号输入不正确，请重新输入</div>
-    <el-button type="primary" :class="{btnSubmit:1===1,btnNoPhone:!form.phone,btnPhone:form.phone}" @click="btnLogin">
+
+    <div class="divpassword">
+        <div class="password">
+            <span  :class="{on: !loginWay}" v-if="loginWay">
+              <a href="javascript:;" @click="loginWay = false">密码登录</a>
+            </span>
+            <span :class="{on: !loginWay}" v-if="!loginWay">
+                <a href="javascript:;"  @click="loginWay = true">短信登录</a>
+            </span>
+        </div>
+        <div class="login_hint">
+            温馨提示：未注册帐号的手机号，登录时将自动注册，且代表已同意
+            <a href="javascript:;">《用户服务协议》</a>
+        </div>
+    </div>
+
+    <el-button type="primary" v-if="loginWay" :class="{btnSubmit:1===1,btnNoPhone:!form.phone,btnPhone:form.phone}" @click="btnLogin">
         登录
     </el-button>
+
+    <el-button type="primary" v-if="!loginWay" :class="{btnSubmit:1===1,btnNoPhone:!form.phone,btnPhone:form.phone}" @click="passwordbtnLogin">
+        密码登录
+    </el-button>
+    <div class="didi">
+        <span>
+           验证码还未开放,手机号直接注册成账号,等备案后再完善
+        </span>
+    </div>
+
 </div>
 <!-- 开发环境版本，包含了有帮助的命令行警告 -->
 <script src="../../backend/plugins/vue/vue.js"></script>
@@ -53,9 +87,11 @@
         el: "#login",
         data() {
             return {
+                loginWay: true,
                 form: {
-                    phone: '',
-                    code: ''
+                    phone: '19980841590',
+                    code: '',
+                    password: '123',
                 },
                 msgFlag: false,
                 loading: false,
@@ -113,7 +149,31 @@
                 } else {
                     this.$notify({type: 'warning', message: '请输入手机号码'});
                 }
-            }
+            },
+                //密码登录
+                async passwordbtnLogin() {
+                const regex = /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/;
+                    if (regex.test(this.form.phone)) {
+                        if (this.form.phone && this.form.password) {
+                            this.loading = true
+                            const res = await passwordloginApi({phone: this.form.phone,password: this.form.password})
+                            this.loading = false
+                            if (res.code === 1) {
+                                sessionStorage.setItem("userPhone", this.form.phone)
+                                window.requestAnimationFrame(() => {
+                                    window.location.href = '/front/index.html'
+                                })
+                            } else {
+                                this.$notify({type: 'warning', message: res.msg});
+                            }
+                        }else {
+                            this.$notify({type: 'warning', message: '请输入手机号码或密码'});
+                        }
+                        this.msgFlag = false
+                    }else {
+                        this.msgFlag = true
+                    }
+             }
         }
     })
 </script>

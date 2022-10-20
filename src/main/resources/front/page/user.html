@@ -23,10 +23,18 @@
             <i class="el-icon-arrow-left" @click="goBack"></i>个人中心
         </div>
         <div class="divUser">
-            <img src="./../images/headPage.png"/>
+<!--            <el-image class="image" :src="imgPathConvert(item.image)">-->
+            <el-image class="image" src="./../images/headPage.png">
+                <div slot="error" class="image-slot">
+                    <img src="./../images/headPage.png"/>
+                </div>
+            </el-image>
             <div class="desc">
                 <div class="divName">林之迷 <img src="./../images/women.png"/></div>
                 <div class="divPhone">{{userPhone}}</div>
+            </div>
+            <div class="divUpdate">
+                编辑个人信息
             </div>
         </div>
     </div>
@@ -190,7 +198,11 @@
                 } else {
                     this.$notify({type: 'warning', message: res.msg});
                 }
-            }
+            },
+            //网络图片路径转换
+            imgPathConvert(path) {
+                return imgPath(path)
+            },
         }
     })
 </script>

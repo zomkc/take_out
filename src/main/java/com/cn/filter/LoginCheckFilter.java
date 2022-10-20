@@ -25,6 +25,8 @@ public class LoginCheckFilter implements Filter {
         //1.获取本此请求的uri
         String requestURI = httpServletRequest.getRequestURI();
 
+//        System.out.println("============================================拦截到请求"+requestURI);
+
         //定义不需要处理的请求路径
         String[] uris = new String[]{
           "/employee/login",
@@ -32,7 +34,8 @@ public class LoginCheckFilter implements Filter {
            "/backend/**",
            "/front/**",
            "/user/sendMsg",
-           "/user/login"
+           "/user/login",
+           "/user/password"
         };
 
         //2.判断本此请求是否需要处理

@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 80
 spring:
   application:
     #应用的名称
@@ -7,7 +7,7 @@ spring:
   datasource:
     druid:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://localhost:3306/takeout?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
+      url: jdbc:mysql://localhost/takeout?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
       username: root
       password: 123456
   #  shardingsphere:
@@ -58,4 +58,5 @@ mybatis-plus:
     db-config:
       id-type: ASSIGN_ID
 jpg:
+#  path: /root/image/
   path: D:\jpg\
