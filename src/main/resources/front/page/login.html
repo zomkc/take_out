@@ -6,14 +6,14 @@
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=no,minimal-ui">
-    <title>鸡你太美</title>
+    <title>只因只因</title>
     <link rel="icon" href="./../images/favico.ico">
     <!--不同屏幕尺寸根字体设置-->
     <script src="./../js/base.js"></script>
     <!--element-ui的样式-->
     <link rel="stylesheet" href="../../backend/plugins/element-ui/index.css"/>
     <!--引入vant样式-->
-    <link rel="stylesheet" href="../styles/vant.min.css"/>
+<!--    <link rel="stylesheet" href="../styles/vant.min.css"/>-->
     <!-- 引入样式  -->
     <link rel="stylesheet" href="../styles/index.css"/>
     <!--本页面内容的样式-->
@@ -42,21 +42,6 @@
 
     <div class="divMsg" v-if="msgFlag">手机号输入不正确，请重新输入</div>
 
-    <div class="divpassword">
-        <div class="password">
-            <span  :class="{on: !loginWay}" v-if="loginWay">
-              <a href="javascript:;" @click="loginWay = false">密码登录</a>
-            </span>
-            <span :class="{on: !loginWay}" v-if="!loginWay">
-                <a href="javascript:;"  @click="loginWay = true">短信登录</a>
-            </span>
-        </div>
-        <div class="login_hint">
-            温馨提示：未注册帐号的手机号，登录时将自动注册，且代表已同意
-            <a href="javascript:;">《用户服务协议》</a>
-        </div>
-    </div>
-
     <el-button type="primary" v-if="loginWay" :class="{btnSubmit:1===1,btnNoPhone:!form.phone,btnPhone:form.phone}" @click="btnLogin">
         登录
     </el-button>
@@ -64,6 +49,22 @@
     <el-button type="primary" v-if="!loginWay" :class="{btnSubmit:1===1,btnNoPhone:!form.phone,btnPhone:form.phone}" @click="passwordbtnLogin">
         密码登录
     </el-button>
+        <div class="login_hint">
+            <span>
+               温馨提示：未注册帐号的手机号，登录时将自动注册，且代表已同意
+            </span>
+            <a href="javascript:;">《用户服务协议》</a>
+        </div>
+
+    <div class="password">
+            <span  :class="{on: !loginWay}" v-if="loginWay">
+              <a href="javascript:;" @click="loginWay = false">密码登录</a>
+            </span>
+        <span :class="{on: loginWay}" v-if="!loginWay">
+                <a href="javascript:;"  @click="loginWay = true">短信登录</a>
+            </span>
+    </div>
+
     <div class="didi">
         <span>
            验证码还未开放,手机号直接注册成账号,等备案后再完善

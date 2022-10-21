@@ -51,11 +51,10 @@
 }
 
 #user .divHead .divUser .divUpdate {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin-left: 130px;
+    margin-left: 110rem;
+    margin-top: 15rem;
     color: rgba(128, 122, 126, 0.71);
+    font-size: 12rem;
 }
 
 #user .divHead .divUser .desc .divName {
@@ -107,7 +106,9 @@
     position: relative;
     display: flex;
     align-items: center;
+    font-size: 16rem;
 }
+
 
 #user .divLinks .divSplit {
     height: 1rem;
