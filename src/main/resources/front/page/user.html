@@ -22,19 +22,22 @@
         <div class="divTitle">
             <i class="el-icon-arrow-left" @click="goBack"></i>个人中心
         </div>
-        <div class="divUser">
+        <div class="divUser" :model="form">
 <!--            <el-image class="image" :src="imgPathConvert(item.image)">-->
-            <el-image class="image" src="./../images/headPage.png">
+            <el-image class="image" :src="form.avatar">
                 <div slot="error" class="image-slot">
-                    <img src="./../images/headPage.png"/>
+                    <img class="image" src="./../images/headPage.png">
                 </div>
             </el-image>
             <div class="desc">
-                <div class="divName">林之迷 <img src="./../images/women.png"/></div>
-                <div class="divPhone">{{userPhone}}</div>
+                <div class="divName">{{form.name}}
+                <img v-if="form.sex==2" src="./../images/women.png"/>
+                <img v-if="form.sex==1" src="./../images/1.png"/>
+                </div>
+                <div class="divPhone">{{form.phone}}</div>
             </div>
-            <div class="divUpdate">
-                编辑个人信息
+            <div class="divUpdate" @click="edit">
+                编辑信息
             </div>
         </div>
     </div>
@@ -97,8 +100,11 @@
         data() {
             return {
                 form: {
-                    phone: '',
-                    code: ''
+                    // phone: '12345678910',//手机号
+                    // name: '张三',//姓名
+                    // sex: '2',//性别,1男,2女
+                    // avatar: '', //头像
+                    // password: '123'//密码
                 },
                 msgFlag: false,
                 order: [{
@@ -118,12 +124,24 @@
         created() {
             this.userPhone = sessionStorage.getItem("userPhone")
             this.initData()
+            this.initUserData()
         },
         mounted() {
         },
         methods: {
+            //初始化用户数据
+            async initUserData() {
+                const res = await edituserApi({phone: this.userPhone})
+                if (res.code === 1) {
+                    this.form = res.data
+                } else {
+                    this.$notify({type: 'warning', message: res.msg});
+                }
+            },
             goBack() {
-                history.go(-1)
+                window.requestAnimationFrame(() => {
+                    window.location.href = '/front/index.html'
+                })
             },
             toAddressPage() {
                 window.requestAnimationFrame(() => {
@@ -198,6 +216,12 @@
                 } else {
                     this.$notify({type: 'warning', message: res.msg});
                 }
+            },
+            //跳转修改信息页面
+            async edit() {
+                    window.requestAnimationFrame(() => {
+                        window.location.href = '/front/page/edituser.html'
+                    })
             },
             //网络图片路径转换
             imgPathConvert(path) {

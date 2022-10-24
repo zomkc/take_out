@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -123,6 +124,23 @@ public class UserController {
         session.setAttribute("user",user.getId());
 
         return R.success(user);
+    }
+
+    //编辑信息
+    @PostMapping("/edit")
+    public R<User> edit(@RequestBody User user){
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(User::getPhone,user.getPhone());
+
+        User one = userService.getOne(wrapper);
+        return R.success(one);
+    }
+
+    //确认修改
+    @PostMapping("/edituser")
+    public R<String> edituser(@RequestBody User user){
+        userService.editUser(user);
+        return R.success("修改成功");
     }
 
     //用户退出

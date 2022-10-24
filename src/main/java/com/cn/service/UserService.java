@@ -5,4 +5,5 @@ import com.cn.entity.User;
 
 public interface UserService extends IService<User> {
 
+     public void editUser(User user);
 }

@@ -29,4 +29,22 @@ function loginoutApi() {
     })
 }
 
+//获取用户数据
+function edituserApi(data) {
+    return $axios({
+        'url': '/user/edit',
+        'method':'post',
+        data
+    })
+}
+
+// 修改用户信息
+function editApi(data) {
+    return $axios({
+        'url': '/user/edituser',
+        'method':'post',
+        data
+    })
+}
+
   

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.mapper.UserMapper">
+    <select id="editUser" resultType="integer">
+        update user set avatar = #{avatar},phone = #{phone},name = #{name},password = #{password},
+        sex = #{sex}
+        where id = #{id}
+    </select>
+</mapper>
+
+    
