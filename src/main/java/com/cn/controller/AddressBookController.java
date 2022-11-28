@@ -14,6 +14,7 @@ import java.util.List;
 /**
  * 地址簿管理
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/addressBook")
 public class AddressBookController {

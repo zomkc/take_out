@@ -22,13 +22,18 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @RestController
 @RequestMapping("/user")
+@CrossOrigin
 public class UserController {
 
     @Autowired
     private UserService userService;
     @Resource
     private RedisTemplate redisTemplate;
-
+    @GetMapping("/get")
+    public  String get(String s){
+        System.out.println(s+"==========================");
+        return s;
+    }
     //验证码
     @PostMapping("/sendMsg")
     public R<String> sendMsg(@RequestBody User user){
@@ -54,6 +59,7 @@ public class UserController {
     //登录
     @PostMapping("/login")
     public R<User> login(@RequestBody Map map,HttpSession session){
+        System.out.println(map);
         //获取手机号
         String phone = map.get("phone").toString();
         //获取验证码
@@ -94,6 +100,7 @@ public class UserController {
     //账号密码登录
     @PostMapping("/password")
     public R<User> password(@RequestBody Map map,HttpSession session) {
+        System.out.println(map);
         //获取手机号
         String phone = map.get("phone").toString();
         //获取密码

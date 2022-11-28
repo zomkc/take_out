@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-
+@CrossOrigin
 @RestController
 @RequestMapping("/order")
 public class OrderController {

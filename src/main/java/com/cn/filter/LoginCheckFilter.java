@@ -32,10 +32,10 @@ public class LoginCheckFilter implements Filter {
           "/employee/login",
            "/employee/logout",
            "/backend/**",
-           "/front/**",
            "/user/sendMsg",
            "/user/login",
-           "/user/password"
+           "/user/password",
+           "/user/get"
         };
 
         //2.判断本此请求是否需要处理

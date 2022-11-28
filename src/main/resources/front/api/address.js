@@ -34,6 +34,7 @@ function updateAddressApi(data) {
 
 //删除地址
 function deleteAddressApi(params) {
+    console.log(params)
     return $axios({
         'url': '/addressBook',
         'method': 'delete',

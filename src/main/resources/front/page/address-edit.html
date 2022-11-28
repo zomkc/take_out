@@ -29,7 +29,6 @@
         <div class="divItem">
             <span>联系人：</span>
             <el-input placeholder=" 请填写收货人的姓名" v-model="form.consignee" maxlength='10' class="inputUser"/>
-            </el-input>
             <span class="spanChecked" @click="form.sex = '1'">
                     <i :class="{iActive:form.sex === '1'}"></i>
                     先生
@@ -42,12 +41,10 @@
         <div class="divItem">
             <span>手机号：</span>
             <el-input placeholder=" 请填写收货人手机号码" v-model="form.phone" maxlength='20' style="width: calc(100% - 80rem);"/>
-            </el-input>
         </div>
         <div class="divItem">
             <span>收货地址：</span>
             <el-input placeholder=" 请输入收货地址" v-model="form.detail" maxlength='140'/>
-            </el-input>
         </div>
         <div class="divItem ">
             <span>标签：</span>
@@ -89,11 +86,8 @@
                 activeIndex: 0
             }
         },
-        computed: {},
         created() {
             this.initData()
-        },
-        mounted() {
         },
         methods: {
             goBack() {
