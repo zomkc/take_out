@@ -2,12 +2,16 @@
 ##### 启动vue:
 
 前提:安装node.js
-命令行命令:  `npm i`   //安装依赖
-           `npm run dev`  //运行vue
+命令行命令: 
+
+`npm i`
+
+`npm run dev`
 
 ##### 启动jar
 
 前提:安装jdk或jre
-命令行命令:  `java -jar [jar包] `   //运行java
+
+命令行命令:  `java -jar [jar包] `
 
 其他安装: mysql 8    redis 6
