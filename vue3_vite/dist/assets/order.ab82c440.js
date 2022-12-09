@@ -1,0 +1,1 @@
+import{aa as o}from"./index.7da13a9a.js";function a(r){return o.post("https://zomkc.cn:8080/order/submit",{...r})}function n(r){return o.get("https://zomkc.cn:8080/order/userPage",{params:{...r}})}function e(r){return o.post("https://zomkc.cn:8080/order/again",{...r})}export{e as a,a as b,n as o};

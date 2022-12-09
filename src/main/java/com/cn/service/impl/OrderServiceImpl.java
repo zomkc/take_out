@@ -35,16 +35,16 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
     @Transactional
     public void submit(Orders orders) {
         //获得当前用户id
-        Long id = BaseContext.getCurrentId();
+//        Long id = BaseContext.getCurrentId();
         //查询当前用户购物车数据
         LambdaQueryWrapper<ShoppingCart> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(ShoppingCart::getUserId,id);
+        queryWrapper.eq(ShoppingCart::getUserId,orders.getUserId());
         List<ShoppingCart> list = shoppingCartService.list(queryWrapper);
         if (list == null || list.size() == 0){
             throw new CustomException("购物车未空,不能提交订单");
         }
         //查询用户数据
-        User user = userService.getById(id);
+        User user = userService.getById(orders.getUserId());
         //查询地址数据
         Long bookId = orders.getAddressBookId();
         AddressBook addressBook = addressBookService.getById(bookId);
@@ -75,7 +75,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
         orders.setCheckoutTime(LocalDateTime.now());
         orders.setStatus(2);
         orders.setAmount(new BigDecimal(amount.get()));//总金额
-        orders.setUserId(id);
+        orders.setUserId(orders.getUserId());
         orders.setNumber(String.valueOf(orderId));//订单号
         orders.setUserName(user.getName());
         orders.setConsignee(addressBook.getConsignee());

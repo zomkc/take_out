@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.springframework.beans.BeanUtils.*;
-@CrossOrigin
+//@CrossOrigin
 @RestController
 @RequestMapping("/setmeal")
 public class SetmealController {

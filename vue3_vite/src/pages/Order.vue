@@ -51,7 +51,8 @@ export default {
             return {
                 paging: {
                     page: 1,
-                    pageSize: 5
+                    pageSize: 5,
+                    userId:sessionStorage.getItem("userId")
                 },
                 orderList: [],
                 loading: false,
@@ -104,7 +105,7 @@ export default {
                 }
             },
             async addOrderAgain(order) {
-                const res = await orderAgainApi({id: order.id})
+                const res = await orderAgainApi({id: order.id,userId:sessionStorage.getItem("userId")})
                 if (res.data.code === 1) {
                     window.requestAnimationFrame(() => {
                        this.$router.push('/home')

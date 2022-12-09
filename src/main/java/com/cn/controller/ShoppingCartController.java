@@ -6,12 +6,16 @@ import com.cn.common.BaseContext;
 import com.cn.common.R;
 import com.cn.entity.ShoppingCart;
 import com.cn.service.ShoppingCartService;
+import org.apache.catalina.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.convert.ValueConverter;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.List;
-@CrossOrigin
+//@CrossOrigin
 @RestController
 @RequestMapping("/shoppingCart")
 public class ShoppingCartController {
@@ -21,9 +25,9 @@ public class ShoppingCartController {
 
     //查看购物车
     @GetMapping("/list")
-    public R<List<ShoppingCart>> list(){
+    public R<List<ShoppingCart>> list(String userId){
         LambdaQueryWrapper<ShoppingCart> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(ShoppingCart::getUserId,BaseContext.getCurrentId())
+        queryWrapper.eq(ShoppingCart::getUserId,userId)
                 .orderByAsc(ShoppingCart::getCreateTime);
 
         List<ShoppingCart> list = shoppingCartService.list(queryWrapper);
@@ -35,12 +39,12 @@ public class ShoppingCartController {
     @PostMapping("/add")
     public R<ShoppingCart> add(@RequestBody ShoppingCart shoppingCart){
         //设置用户id
-        Long currentId = BaseContext.getCurrentId();
-        shoppingCart.setUserId(currentId);
+//        Long currentId = BaseContext.getCurrentId();
+//        shoppingCart.setUserId(currentId);
 
         //查询当前菜品是否在购物车中
         LambdaQueryWrapper<ShoppingCart> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(ShoppingCart::getUserId,currentId);
+        queryWrapper.eq(ShoppingCart::getUserId,shoppingCart.getUserId());
                             //.eq(ShoppingCart::getDishFlavor,shoppingCart.getDishFlavor())//口味是否重复
         if (shoppingCart.getDishId() != null){
             queryWrapper.eq(ShoppingCart::getDishId,shoppingCart.getDishId());//添加到购物车的是菜品
@@ -67,11 +71,11 @@ public class ShoppingCartController {
     }
 
     //清空购物车
-    @DeleteMapping("/clean")
-    public R<String> clean(){
-        Long id = BaseContext.getCurrentId();
+    @PostMapping("/clean")
+    public R<String> clean(@RequestBody ShoppingCart shoppingCart){
+//        Long id = BaseContext.getCurrentId();
         LambdaQueryWrapper<ShoppingCart> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(ShoppingCart::getUserId,id);
+        queryWrapper.eq(ShoppingCart::getUserId,shoppingCart.getUserId());
 
         shoppingCartService.remove(queryWrapper);
 

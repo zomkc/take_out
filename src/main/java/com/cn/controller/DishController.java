@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
-@CrossOrigin
+//@CrossOrigin
 @RestController
 @RequestMapping("/dish")
 public class DishController {
@@ -136,8 +136,6 @@ public class DishController {
         if (dishDtoList != null){
             //如果存在直接访问数据库,无需访问
             return R.success(dishDtoList);
-        }else {
-            System.out.println("============:redis取出数据为空");
         }
 
         LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();

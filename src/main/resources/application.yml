@@ -1,5 +1,12 @@
 server:
-  port: 8080
+  port: 8080               #https端口
+  http:
+    port: 8081              #http端口
+  ssl:
+    key-store: classpath:zomkc.cn.jks
+    key-store-password: 6p9zfc3uyt43
+    key-store-type: JKS
+    enabled: true
 spring:
   application:
     #应用的名称
@@ -9,8 +16,8 @@ spring:
       driver-class-name: com.mysql.cj.jdbc.Driver
       url: jdbc:mysql://localhost/takeout?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
       username: root
-#      password: Zz15882202696
-      password: 123456
+      password:
+#      password: 123456
   #  shardingsphere:
 #    datasource:
 #      names: master,slave
@@ -53,11 +60,9 @@ spring:
       time-to-live: 1800000 #设置缓存有效期,单位毫秒
     type: redis
 mybatis-plus:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     db-config:
       id-type: ASSIGN_ID
 jpg:
-#  path: /root/image/
-  path: D:\jpg\
+  path: /root/image/
+#  path: D:\jpg\

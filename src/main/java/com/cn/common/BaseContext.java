@@ -21,4 +21,9 @@ public class BaseContext {
         return threadLocal.get();
     }
 
+    //删除当前登录用户
+    public static void remove(){
+        threadLocal.remove();
+    }
+
 }

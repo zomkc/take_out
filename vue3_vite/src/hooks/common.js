@@ -1,7 +1,7 @@
 var web_prefix = '/front'
 
 export function imgPath(path) {
-    return '/api/common/download?name=' + path
+    return 'https://zomkc.cn:8080/common/download?name=' + path
 }
 
 

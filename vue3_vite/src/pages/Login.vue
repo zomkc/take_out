@@ -40,7 +40,11 @@
             </span>
     </div>
 
-
+    <div class="didi">
+        <span>
+            <a href="https://zomkc.cn:8080/backend/page/login/login.html">管理端</a>
+        </span>
+    </div>
 </div>
 </template>
 <script>
@@ -77,7 +81,7 @@ components:{ElConfigProvider},
             }
         },
         methods: {
-            getCode() {
+            async getCode() {
                 this.form.code = ''
                 //const regex = /^(13[0-9]{9})|(15[0-9]{9})|(17[0-9]{9})|(18[0-9]{9})|(19[0-9]{9})$/;
                 const regex = /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/;
@@ -99,7 +103,9 @@ components:{ElConfigProvider},
 
                     this.msgFlag = false
                     //this.form.code = (Math.random() * 1000000).toFixed(0)
-                    sendMsgApi({phone:this.form.phone})
+                    const res = await sendMsgApi({phone:this.form.phone})
+                    this.form.code = res.data.data
+                    console.log(res.data.data)
                 } else {
                     this.msgFlag = true
                 }
@@ -111,6 +117,7 @@ components:{ElConfigProvider},
                     this.loading = false
                     if (res.data.code === 1) {
                         sessionStorage.setItem("userPhone", this.form.phone)
+                        sessionStorage.setItem("userId", res.data.data.id)
                         window.requestAnimationFrame(() => {
                             this.$router.push('/home')
                         })
@@ -131,6 +138,7 @@ components:{ElConfigProvider},
                             this.loading = false
                             if (res.data.code === 1) {
                                 sessionStorage.setItem("userPhone", this.form.phone)
+                                sessionStorage.setItem("userId", res.data.data.id)
                                 window.requestAnimationFrame(() => {
                                     this.$router.push('/home')
                                 })
@@ -283,7 +291,6 @@ a {
     width: 100%;
     margin-top: 150rem;
     text-align: center;
-    background-color: rgba(168, 167, 155, 0.51);
 }
 .didi span{
     color: #ffffff;

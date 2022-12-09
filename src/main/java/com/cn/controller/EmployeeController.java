@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-@CrossOrigin
+//@CrossOrigin
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController {
@@ -50,7 +50,7 @@ public class EmployeeController {
             return R.error("员工已被禁用");
         }
 
-        //6.登录成功,将袁工id存入Session中,并返回登录成功结果
+        //6.登录成功,将员工id存入Session中,并返回登录成功结果
         request.getSession().setAttribute("employee",emp.getId());
 
         return R.success(emp);

@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * 地址簿管理
  */
-@CrossOrigin
+//@CrossOrigin
 @RestController
 @RequestMapping("/addressBook")
 public class AddressBookController {
@@ -27,8 +27,7 @@ public class AddressBookController {
      */
     @PostMapping
     public R<AddressBook> save(@RequestBody AddressBook addressBook) {
-        addressBook.setUserId(BaseContext.getCurrentId());
-        addressBookService.save(addressBook);
+        addressBookService.SaveBook(addressBook);
         return R.success(addressBook);
     }
 
@@ -38,8 +37,9 @@ public class AddressBookController {
 //    @PutMapping("default")
     @PutMapping()
     public R<AddressBook> setDefault(@RequestBody AddressBook addressBook) {
+        System.out.println(addressBook);
         LambdaUpdateWrapper<AddressBook> wrapper = new LambdaUpdateWrapper<>();
-        wrapper.eq(AddressBook::getUserId, BaseContext.getCurrentId());
+        wrapper.eq(AddressBook::getUserId, addressBook.getUserId());
         wrapper.set(AddressBook::getIsDefault, 0);
         //SQL:update address_book set is_default = 0 where user_id = ?
         addressBookService.update(wrapper);
@@ -66,10 +66,10 @@ public class AddressBookController {
     /**
      * 查询默认地址
      */
-    @GetMapping("default")
-    public R<AddressBook> getDefault() {
+    @GetMapping("default/{id}")
+    public R<AddressBook> getDefault(@PathVariable Long id) {
         LambdaQueryWrapper<AddressBook> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(AddressBook::getUserId, BaseContext.getCurrentId());
+        queryWrapper.eq(AddressBook::getUserId, id);
         queryWrapper.eq(AddressBook::getIsDefault, 1);
 
         //SQL:select * from address_book where user_id = ? and is_default = 1
@@ -85,9 +85,9 @@ public class AddressBookController {
     /**
      * 查询指定用户的全部地址
      */
-    @GetMapping("/list")
-    public R<List<AddressBook>> list(AddressBook addressBook) {
-        addressBook.setUserId(BaseContext.getCurrentId());
+    @PostMapping("/list")
+    public R<List<AddressBook>> list(@RequestBody AddressBook addressBook) {
+//        addressBook.setUserId(BaseContext.getCurrentId());
 
         //条件构造器
         LambdaQueryWrapper<AddressBook> queryWrapper = new LambdaQueryWrapper<>();

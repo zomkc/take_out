@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-@CrossOrigin
+//@CrossOrigin
 @RestController
 @RequestMapping("/order")
 public class OrderController {
@@ -43,11 +43,11 @@ public class OrderController {
 
     //用户分页查询订单
     @GetMapping("/userPage")
-    public R<Page> userPage(int page, int pageSize, HttpSession session) {
+    public R<Page> userPage(int page, int pageSize,String userId) {
         Page<Orders> pageInfo = new Page<>(page, pageSize);
         Page<OrdersDto> pageInfoDto = new Page<>();
         //获取用户id
-        Long userId = (Long) session.getAttribute("user");
+
         //根据id查询分页数据
         LambdaQueryWrapper<Orders> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Orders::getUserId,userId)
@@ -130,10 +130,11 @@ public class OrderController {
     //再来一单
     @PostMapping("/again")
     public R<String> again(@RequestBody Orders orders,HttpSession session){
+        System.out.println(orders);
         //清空购物车
-        Long userId = (Long) session.getAttribute("user");
+//        Long userId = (Long) session.getAttribute("user");
         LambdaQueryWrapper<ShoppingCart> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(ShoppingCart::getUserId,userId);
+        queryWrapper.eq(ShoppingCart::getUserId,orders.getUserId());
         shoppingCartService.remove(queryWrapper);
 
         LambdaQueryWrapper<OrderDetail> wrapper = new LambdaQueryWrapper<>();
@@ -144,7 +145,7 @@ public class OrderController {
             shoppingCart.setName(i.getName());//菜品名字
             shoppingCart.setImage(i.getImage());//菜品图片
             shoppingCart.setNumber(i.getNumber());//菜品数量
-            shoppingCart.setUserId(userId);//用户id
+            shoppingCart.setUserId(orders.getUserId());//用户id
             shoppingCart.setAmount(i.getAmount());//金额
             shoppingCart.setCreateTime(LocalDateTime.now());
             //菜品/套餐 id

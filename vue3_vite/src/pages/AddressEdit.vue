@@ -52,6 +52,7 @@ export default {
                     sex: '1',//0表示女 1 表示男
                     detail: '',//收货地址
                     label: '公司',//标签
+                    userId:sessionStorage.getItem("userId")
                 },
                 labelList: [
                     '无', '公司', '家', '学校'
@@ -113,7 +114,7 @@ export default {
                 } else {
                     res = await addAddressApi(this.form)
                 }
-
+                console.log(res.data)
                 if (res.data.code === 1) {
                     window.requestAnimationFrame(() => {
                         this.$router.push('/address')

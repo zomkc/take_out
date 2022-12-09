@@ -7,7 +7,7 @@
         <div class="divStatic">
             <img src="/images/favico.jpg" class="logo"/>
             <div class="divDesc">
-                <div class="divName">只因只因</div>
+                <div class="divName">只因</div>
                 <div class="divSend">
                     <span><img src="/images/time.png"/> 距离1.5km</span>
                     <span><img src="/images/money.png"/> 配送费6元</span>
@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="divDesc">
-            简介: 只因只因炸鸡店是鸡你太美点餐的独立的品牌，定位“大众 化的美食外送餐饮”，旨为顾客打造专业美食。
+            简介: 只因炸鸡店是只因点餐的独立的品牌，定位“大众 化的美食外送餐饮”，旨为顾客打造专业美食。
         </div>
     </div>
     <div class="divBody">
@@ -310,7 +310,7 @@ export default {
         methods: {
             //初始化数据
             initData() {
-                Promise.all([categoryListApi(), cartListApi({})]).then(res => {
+                Promise.all([categoryListApi(), cartListApi({userId:sessionStorage.getItem("userId")})]).then(res => {
                     //获取分类数据
                     if (res[0].data.code === 1) {
                         this.categoryList = res[0].data.data
@@ -391,7 +391,7 @@ export default {
             },
             //获取购物车数据
             async getCartData() {
-                const res = await cartListApi({})
+                const res = await cartListApi({userId:sessionStorage.getItem("userId")})
                 if (res.data.code === 1) {
                     this.cartData = res.data.data
                 } else {
@@ -406,7 +406,8 @@ export default {
                     dishId: undefined,//菜品id
                     setmealId: undefined,//套餐id
                     name: item.name,
-                    image: item.image
+                    image: item.image,
+                    userId:sessionStorage.getItem("userId")
                 }
                 if (Array.isArray(item.flavors)) {//表示是菜品
                     params.dishId = item.id
@@ -470,7 +471,8 @@ export default {
                     dishId: item.dishId,//菜品id
                     setmealId: item.setmealId,//套餐id
                     name: item.name,
-                    image: item.image
+                    image: item.image,
+                    userId:sessionStorage.getItem("userId")
                 }
                 const res = await addCartApi(params)
                 if (res.data.code === 1) {
@@ -515,7 +517,7 @@ export default {
 
             //清空购物车
             async clearCart() {
-                const res = await clearCartApi()
+                const res = await clearCartApi({userId:sessionStorage.getItem("userId")})
                 if (res.data.code === 1) {
                     for (let ele of this.dishList) {
                         ele.number = undefined

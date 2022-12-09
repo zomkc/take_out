@@ -65,7 +65,7 @@ export default {
                 })
             },
             async initData() {
-                const res = await addressListApi()
+                const res = await addressListApi({userId:sessionStorage.getItem("userId")})
                 if (res.data.code === 1) {
                     this.addressList = res.data.data
                 } else {
@@ -74,7 +74,7 @@ export default {
             },
             async setDefaultAddress(item) {
                 if (item.id) {
-                    const res = await setDefaultAddressApi({id: item.id})
+                    const res = await setDefaultAddressApi({id: item.id,userId:sessionStorage.getItem("userId")})
                     if (res.data.code === 1) {
                         this.initData()
                     } else {

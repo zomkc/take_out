@@ -2,6 +2,7 @@ package com.cn.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.cn.common.BaseContext;
 import com.cn.common.R;
 import com.cn.entity.User;
 import com.cn.service.UserService;
@@ -19,10 +20,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-@Slf4j
 @RestController
 @RequestMapping("/user")
-@CrossOrigin
+//@CrossOrigin
 public class UserController {
 
     @Autowired
@@ -31,7 +31,7 @@ public class UserController {
     private RedisTemplate redisTemplate;
     @GetMapping("/get")
     public  String get(String s){
-        System.out.println(s+"==========================");
+        System.out.println(s+"==========================test");
         return s;
     }
     //验证码
@@ -45,11 +45,11 @@ public class UserController {
             String code = ValidateCodeUtils.generateValidateCode(4).toString();
             //调用阿里短信服务
             //SMSUtils.sendMessage("阿里云短信测试","SMS_154950909",phone,code);
-            log.info(code);
             //将验证码缓存到redis中,设置有效期为五分钟
             redisTemplate.opsForValue().set(phone,code,5, TimeUnit.MINUTES);
 
-            R.success("验证码发送成功");
+//            R.success("验证码发送成功");
+           return R.success(code);
         }
 
 //        session.setMaxInactiveInterval(60);
@@ -59,7 +59,6 @@ public class UserController {
     //登录
     @PostMapping("/login")
     public R<User> login(@RequestBody Map map,HttpSession session){
-        System.out.println(map);
         //获取手机号
         String phone = map.get("phone").toString();
         //获取验证码
@@ -86,6 +85,7 @@ public class UserController {
             }
             user = userService.getOne(wrapper);
             session.setAttribute("user",user.getId());
+//            redisTemplate.opsForValue().set(phone,user.getId(),60, TimeUnit.MINUTES);
 
             //用户登录成功,删除缓存中的验证码
             redisTemplate.delete(code);
@@ -100,7 +100,6 @@ public class UserController {
     //账号密码登录
     @PostMapping("/password")
     public R<User> password(@RequestBody Map map,HttpSession session) {
-        System.out.println(map);
         //获取手机号
         String phone = map.get("phone").toString();
         //获取密码
@@ -133,7 +132,7 @@ public class UserController {
         return R.success(user);
     }
 
-    //编辑信息
+    //用户信息
     @PostMapping("/edit")
     public R<User> edit(@RequestBody User user){
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();

@@ -10,11 +10,11 @@
             <el-form-item label="头像" >
                 <div class="uploader">
                     <el-upload
-                            action="/api/common/upload"
+                            action="https://zomkc.cn:8080/common/upload"
                             :show-file-list="false"
                             :on-success="handleAvatarSuccess"
                             :before-upload="beforeAvatarUpload">
-                        <img v-if="form.avatar" :src="'/api'+form.avatar" class="avatar">
+                        <img v-if="form.avatar" :src="'https://zomkc.cn:8080/'+form.avatar" class="avatar">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
                 </div>

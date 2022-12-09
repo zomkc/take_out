@@ -11,7 +11,7 @@
  Target Server Version : 80030
  File Encoding         : 65001
 
- Date: 24/10/2022 11:01:42
+ Date: 09/12/2022 07:51:19
 */
 
 SET NAMES utf8mb4;
@@ -22,10 +22,10 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `address_book`;
 CREATE TABLE `address_book`  (
-  `id` bigint(0) NOT NULL COMMENT '主键',
+  `id` bigint(0) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `user_id` bigint(0) NOT NULL COMMENT '用户id',
   `consignee` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT '收货人',
-  `sex` tinyint(0) NOT NULL COMMENT '性别 0 女 1 男',
+  `sex` varchar(8) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT '性别 0 女 1 男',
   `phone` varchar(11) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT '手机号',
   `province_code` varchar(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '省级区划编号',
   `province_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '省级名称',
@@ -35,20 +35,20 @@ CREATE TABLE `address_book`  (
   `district_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '区级名称',
   `detail` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '详细地址',
   `label` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '标签',
-  `is_default` tinyint(1) NOT NULL DEFAULT 0 COMMENT '默认 0 否 1是',
-  `create_time` datetime(0) NOT NULL COMMENT '创建时间',
-  `update_time` datetime(0) NOT NULL COMMENT '更新时间',
-  `create_user` bigint(0) NOT NULL COMMENT '创建人',
-  `update_user` bigint(0) NOT NULL COMMENT '修改人',
-  `is_deleted` int(0) NOT NULL DEFAULT 0 COMMENT '是否删除',
+  `is_default` tinyint(1) NULL DEFAULT 0 COMMENT '默认 0 否 1是',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  `create_user` bigint(0) NULL DEFAULT NULL COMMENT '创建人',
+  `update_user` bigint(0) NULL DEFAULT NULL COMMENT '修改人',
+  `is_deleted` int(0) NULL DEFAULT 0 COMMENT '是否删除',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin COMMENT = '地址管理' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of address_book
 -- ----------------------------
-INSERT INTO `address_book` VALUES (1580511604179832833, 1578579053504749569, '小李', 1, '19980841590', NULL, NULL, NULL, NULL, NULL, NULL, '翻斗花园101', '无', 1, '2022-10-13 18:51:46', '2022-10-13 18:52:00', 1578579053504749569, 1578579053504749569, 0);
-INSERT INTO `address_book` VALUES (1580511824053637122, 1578579053504749569, '张三', 1, '19980841590', NULL, NULL, NULL, NULL, NULL, NULL, '翻斗花园1001', '学校', 0, '2022-10-13 18:52:38', '2022-10-13 18:52:38', 1578579053504749569, 1578579053504749569, 0);
+INSERT INTO `address_book` VALUES (1, 1578579053504749569, '张三', '1', '19980841590', NULL, NULL, NULL, NULL, NULL, NULL, '翻斗花园', '公司', 0, NULL, '2022-12-08 21:47:42', NULL, NULL, 0);
+INSERT INTO `address_book` VALUES (4, 1578579053504749569, '王五', '1', '19980841590', NULL, NULL, NULL, NULL, NULL, NULL, '翻斗花园001', '学校', 1, NULL, '2022-12-08 21:47:42', NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for category
@@ -394,6 +394,6 @@ CREATE TABLE `user`  (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1578579053504749569, '张三', '19980841590', '2', NULL, '/common/download?name=bd237414-73ec-4b76-ad57-df18734dea20.png', 1, '123');
+INSERT INTO `user` VALUES (1578579053504749569, '张三', '19980841590', '2', NULL, '/common/download?name=1d81decb-295c-4ef8-82e0-7e66f853f5a8.png', 1, '123');
 
 SET FOREIGN_KEY_CHECKS = 1;

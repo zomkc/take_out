@@ -86,7 +86,7 @@ export default {
                     consignee: '',//姓名
                     detail: '',//详细地址
                     sex: '1',
-                    id: undefined
+                    userId:sessionStorage.getItem("userId")
                 },
                 finishTime: '',//送达时间
                 cartData: [],
@@ -128,12 +128,13 @@ export default {
             },
             //获取默认地址
             async defaultAddress() {
-                const res = await getDefaultAddressApi()
+                const res = await getDefaultAddressApi(this.address.userId)
                 if (res.data.code === 1) {
                     this.address = res.data.data
                     this.getFinishTime()
                 } else {
                     window.requestAnimationFrame(() => {
+                        this.$router.push('/addressedit')
                         // window.location.href = '/front/page/address-edit.html'
                     })
                 }
@@ -153,12 +154,13 @@ export default {
             },
             toAddressPage() {
                 window.requestAnimationFrame(() => {
+                    this.$router.push('/address')
                     // window.location.href = '/front/page/address.html'
                 })
             },
             //获取购物车数据
             async getCartData() {
-                const res = await cartListApi({})
+                const res = await cartListApi({userId: this.address.userId})
                 if (res.data.code === 1) {
                     this.cartData = res.data.data
                 } else {
@@ -169,11 +171,13 @@ export default {
                 const params = {
                     remark: this.note,
                     payMethod: 1,
-                    addressBookId: this.address.id
+                    addressBookId: this.address.id,
+                    userId:this.address.userId
                 }
                 const res = await addOrderApi(params)
                 if (res.data.code === 1) {
                     window.requestAnimationFrame(() => {
+                        this.$router.push('/order')
                         // window.location.replace('/front/page/pay-success.html')
                     })
                 } else {

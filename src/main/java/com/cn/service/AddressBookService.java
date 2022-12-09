@@ -5,5 +5,5 @@ import com.cn.entity.AddressBook;
 
 public interface AddressBookService extends IService<AddressBook> {
 
-
+    public Long SaveBook(AddressBook addressBook);
 }

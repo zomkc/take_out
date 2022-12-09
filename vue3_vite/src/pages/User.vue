@@ -7,7 +7,7 @@
             个人中心
         </div>
         <div class="divUser" :model="form">
-           <el-image class="image" :src="'/api'+form.avatar">
+           <el-image class="image" :src="'https://zomkc.cn:8080/'+form.avatar">
                 <div slot="error" class="image-slot">
                     <img class="image" src="/images/headPage.png">
                 </div>
@@ -88,10 +88,12 @@ export default {
                     amount: undefined,//实收金额
                     sumNum: 0,//菜品总数
                 }],
+                userId:''
             }
         },
         created() {
             this.userPhone = sessionStorage.getItem("userPhone")
+            this.userId = sessionStorage.getItem("userId")
             this.initData()
             this.initUserData()
         },
@@ -126,7 +128,8 @@ export default {
             async getLatestOrder() {
                 const params = {
                     page: 1,
-                    pageSize: 1
+                    pageSize: 1,
+                    userId:this.userId
                 }
                 const res = await orderPagingApi(params)
                 if (res.data.code === 1) {
@@ -165,7 +168,7 @@ export default {
                 return str
             },
             async addOrderAgain() {
-                const res = await orderAgainApi({id: this.order[0].id})
+                const res = await orderAgainApi({id: this.order[0].id,userId:this.userId})
                 if (res.data.code === 1) {
                     window.requestAnimationFrame(() => {
                         this.$router.push('/home')
